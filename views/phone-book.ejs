@@ -35,23 +35,25 @@
                 <p>This is the Phone Book Application main app page.</p>
             </section>
 
+            <!-- BEGIN INPUT AND FILTERS-->
             <section>
                 <button id="new-record-btn">New record</button>
                 <div style="float:right">
-                    <form action="/phonebook">
+                    <form method="GET" action="/phonebook">
                         <label for="filter">Filter by last name: </label>
                         <input type="text" id="filter" name="lNameFilter" placeholder="Blank for all records">
-                        <input type="submit" value="List records">
+                        <input type="submit"  value="List records">
                     </form>
                 </div><br>
             </section>
+            <!-- END INPUT AND FILTERS -->
 
             <section>
                 <% if (inserted) { %>
-                    <p id="inserted"><%= inserted %></p>
+                    <p id="inserted"><%- inserted %></p>
                 <% } %>
                 <% if (records.length != 0) { %>
-                <form method="POST" action="/delete-records">
+                <form method="POST" action="/phonebook-delete">
                     <table id="phonebook">
                         <tr>
                             <th>First Name</th>
@@ -64,7 +66,7 @@
                                 <td><%= record.first_name %></td>
                                 <td><%= record.last_name %></td>
                                 <td><%= record.phone_number %></td>
-                                <td><input type="checkbox" name="delMarked" value="<%= record.person_id %>"></td>
+                                <td><input type="checkbox" name="delMarked" value="<%= record.phone_number %>"></td>
                             </tr>
                         <% }) %>
                     </table><br>

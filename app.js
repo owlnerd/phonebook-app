@@ -5,52 +5,87 @@ const mysql = require('mysql');
 
 const port = 3000;
 
-/* ======================================================
-Creating a database connection and connecting to database
-====================================================== */
+/*
+    ===================================================
+    Creating a database connection and connecting to it
+    ===================================================
+*/
 const database = mysql.createConnection({
     host: 'localhost',
     user: 'root',
     password: '',
     database: 'phonebook',
-    multipleStatements: true
+    multipleStatements: true // This option is for being able to run multistatement queries.
+    // Took some research to figure it out.
 });
 
 database.connect((err) => {
     if (err) throw err;
     console.log('successfully connected to mysql database');
 });
-/* =================================================== */
 
 
+
+/*
+    ==========================
+    Create express application
+    ==========================
+*/
 const app = express();
 
 
+
+/*
+    ==========================================
+    Set view engine and path to template files
+    ==========================================
+*/
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'views'));
 
+
+
+/*
+    ========================
+    Set essential middleware
+    ========================
+*/
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: false}));
 
+
+
+/*
+    ========================
+    Set path to static files
+    ========================
+*/
 app.use(express.static(path.join(__dirname, 'public')));
 
 
-/* =======
-/
-======= */
+
+/*
+    =
+    /
+    =
+*/
 app.get('/', (req, res) => {
     res.render('index', {});
 });
 
 
+app.get('/test', (req, res) => {
+    res.send('<p>Muzika mi svira na uvce<br>a decu zabole uvce</p>');
+});
 
 
 
-/* =======
-/phonebook
-======= */
+/* 
+    ==========
+    /phonebook
+    ==========
+*/
 app.get('/phonebook', (req, res) => {
-    let filtered = false;
     let errMsg = 'There are no records in the database.';
 
     // Create basic query without restriction
@@ -64,13 +99,15 @@ app.get('/phonebook', (req, res) => {
         lastNames = req.query.lNameFilter.split(';');
         let restriction = 'WHERE ';
         lastNames.forEach((v, i) => {
-            restriction += `last_name = '${v}'`;
+            if (/^\w*\.{3}$/.test(v))
+                restriction += `last_name LIKE '${v.replace('...', '')}%'`
+            else
+                restriction += `last_name = '${v}'`;
             if (i !== lastNames.length - 1)
                 restriction += ' OR ';
         });
-        sqlQuery += restriction;
 
-        filtered = true;
+        sqlQuery += restriction;
         errMsg = 'There are no records with specified last name(s).';
     }
 
@@ -86,9 +123,12 @@ app.get('/phonebook', (req, res) => {
 });
 
 
-/* ==============
-/phonebook-insert
-============== */
+
+/* 
+    =================
+    /phonebook-insert
+    =================
+*/
 app.post('/phonebook-insert', (req, res) => {
     let sqlQuery1 = `
         SELECT first_name,
@@ -98,7 +138,7 @@ app.post('/phonebook-insert', (req, res) => {
     `;
     database.query(sqlQuery1, (err, result1) => {
         if (err) throw err;
-        // Ako broj ne postoji u bazi
+        // If the phone number does not exist in the database
         if (result1.length === 0) {
             let sqlQuery2 = `
                 SELECT person_id
@@ -108,7 +148,7 @@ app.post('/phonebook-insert', (req, res) => {
             `;
             database.query(sqlQuery2, (err, result2) => {
                 if (err) throw err;
-                // Ako ne postoji osoba, uneti osobu zatim broj telefona za person_id unete osobe
+                // If the person does not exist in the database, first insert person, then insert phone number
                 if (result2.length === 0) {
                     let sqlQuery3 = ` 
                         INSERT INTO persons(first_name, last_name)
@@ -124,7 +164,7 @@ app.post('/phonebook-insert', (req, res) => {
                         let message = `Inserted new person ${req.body.fName} ${req.body.lName} with a phone number ${req.body.pNumber.replace('+', '%2B')}`;
                         res.redirect('/phonebook?insMsg=' + message);
                     });
-                // U suprotnom, uneti broj telefona za person_id postojece osobe
+                // Otherwise, insert the phone number for the existing person
                 } else {
                     let sqlQuery3 = `
                         INSERT INTO phone_numbers(person_id, phone_number)
@@ -137,7 +177,7 @@ app.post('/phonebook-insert', (req, res) => {
                     });
                 }
             });
-        // U suprotnom, ako broj postoji u bazi, preusmeriti i poslati poruku o postojanju broja
+        // Otherwise, if the phone number does exist in the database, redirect and send appropriate message
         } else {
             console.log('Entry already exists');
             console.log(result1);
@@ -149,9 +189,76 @@ app.post('/phonebook-insert', (req, res) => {
 
 
 
+/* 
+    =================
+    /phonebook-delete
+    =================
+*/
+app.post('/phonebook-delete', (req, res) => {
+    let message = '';
+
+    if (!(req.body.delMarked instanceof Array)) {
+        let tmpArray = [];
+        tmpArray.push(req.body.delMarked);
+        req.body.delMarked = tmpArray;
+    }
+    req.body.delMarked.forEach((v, i) => {
+        let sqlQuery1 = `
+            SELECT person_id
+            FROM phone_numbers
+            WHERE phone_number = '${v}'
+        `;
+        database.query(sqlQuery1, (err, result1) => {
+            if (err) throw err;
+            let sqlQuery2 = `
+                DELETE FROM phone_numbers
+                WHERE phone_number = '${v}'
+            `;
+            database.query(sqlQuery2, (err, result2) => {
+                if (err) throw err;
+                let sqlQuery3 = `
+                    SELECT *
+                    FROM phone_numbers
+                    WHERE person_id = ${result1[0].person_id}
+                `;
+                database.query(sqlQuery3, (err, result3) => {
+                    if (err) throw err;
+                    if (result3.length === 0) {
+                        let sqlQuery4 = `
+                            DELETE FROM persons
+                            WHERE person_id = ${result1[0].person_id}
+                        `;
+                        database.query(sqlQuery4, (err, result4) => {
+                            if (err) throw err;
+                            if (i !== 0)
+                                message += '%3Cbr%3E';
+                            message += `Deleted phone number ${v.replace('+', '%2B')} AND person ${result1[0].person_id}`;
+                            if (i === req.body.delMarked.length - 1)
+                                res.redirect('/phonebook?insMsg=' + message);
+                        });
+                    } else {
+                        if (i !== 0)
+                            message += '%3Cbr%3E';
+                        message += `Deleted phone number ${v.replace('+', '%2B')} of person ${result1[0].person_id}`;
+                        if (i === req.body.delMarked.length - 1)
+                            res.redirect('/phonebook?insMsg=' + message);
+                    }
+
+                });
+            });
+        });
+
+    });
+    console.log(message);
+});
 
 
 
+/*
+    ===================
+    Initiating listener
+    ===================
+*/
 app.listen(port, () => {
     console.log("Server running at port " + port);
 });
