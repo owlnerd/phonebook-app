@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="author" content="Ivan Djurkov">
+    <meta name="description" content="Phone Book Application project for developer candidate">
+    <link rel="stylesheet" type="text/css" href="css/main.css">
+    <title>Page Title</title>
+</head>
+<body>
+    <div id="head-div">
+        <header>
+            <h1>Phonebook App</h1>
+            <img src="images/drawing.svg">
+        </header>
+    </div>
+
+    <div id="nav-div">
+        <nav>
+            <ul>
+                <li><a href="/">HOME</a></li>
+                <li><a href="#" id="current">PHONEBOOK</a></li>
+                <li><a href="#">ABOUT</a></li>
+                <li><a href="#">CONTACT</a></li>
+            </ul>
+        </nav>
+    </div>
+
+    <!-- BEGIN MAIN CONTENT AREA -->
+    <div id="content-div">
+        <main>
+
+            <section class="hidden">
+                <h2>Phonebook</h2>
+                <p>This is the Phone Book Application main app page.</p>
+            </section>
+
+            <section>
+                <button id="new-record-btn">New record</button>
+                <div style="float:right">
+                    <form action="/phonebook">
+                        <label for="filter">Filter by last name: </label>
+                        <input type="text" id="filter" name="lNameFilter" placeholder="Blank for all records">
+                        <input type="submit" value="List records">
+                    </form>
+                </div><br>
+            </section>
+
+            <section>
+                <% if (inserted) { %>
+                    <p id="inserted"><%= inserted %></p>
+                <% } %>
+                <% if (records.length != 0) { %>
+                <form method="POST" action="/delete-records">
+                    <table id="phonebook">
+                        <tr>
+                            <th>First Name</th>
+                            <th>Last Name</th>
+                            <th>Phone Number</th>
+                            <th class="delete-button">Select</th>
+                        </tr>
+                        <% records.forEach((record) => { %>
+                            <tr>
+                                <td><%= record.first_name %></td>
+                                <td><%= record.last_name %></td>
+                                <td><%= record.phone_number %></td>
+                                <td><input type="checkbox" name="delMarked" value="<%= record.person_id %>"></td>
+                            </tr>
+                        <% }) %>
+                    </table><br>
+                    <input class="btn" type="submit" value="Delete selected">
+                <% } else { %>
+                    <%= error %>
+                <% } %>
+                </form>
+            </section>
+
+            <div id="overlay-background">
+                <div id="insert-overlay">
+                    <h3>Insert new phonebook record</h3>
+                    <form method="POST" action="/phonebook-insert">
+                        <div class="form-element">
+                            <label for="first-name">First name:</label><br>
+                            <input type="text" id="first-name" name="fName"><br>
+                        </div>
+                        <div class="form-element">
+                            <label for="last-name">Last name:</label><br>
+                            <input type="text" id="last-name" name="lName"><br>
+                        </div>
+                        <div class="form-element">
+                            <label for="phone-number">Phone number:</label><br>
+                            <input type="text" id="phone-number" name="pNumber"><br>
+                        </div>
+                        <br>
+                        <div class="form-element">
+                            <input type="submit" value="Insert record">
+                        </div>
+                        <div class="form-element">
+                            <button id="reset-fields" type="button">Reset fields</button>
+                        </div>
+                    </form>
+                    <button id="close-insert-overlay">X</button>
+                </div>
+            </div>
+        </main>
+    </div>
+    <!-- END MAIN CONTENT AREA -->
+
+    <div id="foot-div">
+        <footer>
+            <p>Copyright © 2018 - Ivan Djurkov</p>
+        </footer>
+    </div>
+
+
+
+
+
+    <script src="scripts/phonebook-script.js"></script>
+
+
+</body>
+</html>
