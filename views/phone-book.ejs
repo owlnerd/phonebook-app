@@ -4,8 +4,11 @@
     <meta charset="utf-8" />
     <meta name="author" content="Ivan Djurkov">
     <meta name="description" content="Phone Book Application project for developer candidate">
+    <link href="https://fonts.googleapis.com/css?family=PT+Sans:700" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Old+Standard+TT" rel="stylesheet"> 
+    <link href="https://fonts.googleapis.com/css?family=Space+Mono" rel="stylesheet"> 
     <link rel="stylesheet" type="text/css" href="css/main.css">
-    <title>Page Title</title>
+    <title>Phonebook</title>
 </head>
 <body>
     <div id="head-div">
@@ -20,7 +23,7 @@
             <ul>
                 <li><a href="/">HOME</a></li>
                 <li><a href="#" id="current">PHONEBOOK</a></li>
-                <li><a href="#">ABOUT</a></li>
+                <li><a href="about.html">ABOUT</a></li>
                 <li><a href="#">CONTACT</a></li>
             </ul>
         </nav>
@@ -49,8 +52,8 @@
             <!-- END INPUT AND FILTERS -->
 
             <section>
-                <% if (inserted) { %>
-                    <p id="inserted"><%- inserted %></p>
+                <% if (databaseMod) { %>
+                    <p id="db-mod"><%- databaseMod %></p>
                 <% } %>
                 <% if (records.length != 0) { %>
                 <form method="POST" action="/phonebook-delete">
@@ -66,10 +69,12 @@
                                 <td><%= record.first_name %></td>
                                 <td><%= record.last_name %></td>
                                 <td><%= record.phone_number %></td>
-                                <td><input type="checkbox" name="delMarked" value="<%= record.phone_number %>"></td>
+                                <td><input class="select-record" type="checkbox" name="delMarked" value="<%= record.phone_number %>"></td>
                             </tr>
                         <% }) %>
                     </table><br>
+                    <button id="select-all" type="button">Select all</button>
+                    <button id="deselect-all" type="button">Deselect all</button>
                     <input class="btn" type="submit" value="Delete selected">
                 <% } else { %>
                     <%= error %>
@@ -80,22 +85,22 @@
             <div id="overlay-background">
                 <div id="insert-overlay">
                     <h3>Insert new phonebook record</h3>
-                    <form method="POST" action="/phonebook-insert">
+                    <form id="insert-record-form" method="POST" action="/phonebook-insert">
                         <div class="form-element">
                             <label for="first-name">First name:</label><br>
-                            <input type="text" id="first-name" name="fName"><br>
+                            <input type="text" id="first-name-input" name="fName"><br>
                         </div>
                         <div class="form-element">
                             <label for="last-name">Last name:</label><br>
-                            <input type="text" id="last-name" name="lName"><br>
+                            <input type="text" id="last-name-input" name="lName"><br>
                         </div>
                         <div class="form-element">
                             <label for="phone-number">Phone number:</label><br>
-                            <input type="text" id="phone-number" name="pNumber"><br>
+                            <input type="text" id="phone-number-input" name="pNumber"><br>
                         </div>
                         <br>
                         <div class="form-element">
-                            <input type="submit" value="Insert record">
+                            <input id="submit-record" type="submit" value="Insert record">
                         </div>
                         <div class="form-element">
                             <button id="reset-fields" type="button">Reset fields</button>

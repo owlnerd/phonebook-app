@@ -69,9 +69,9 @@ app.use(express.static(path.join(__dirname, 'public')));
     /
     =
 */
-app.get('/', (req, res) => {
+/*app.get('/', (req, res) => {
     res.render('index', {});
-});
+});*/
 
 
 app.get('/test', (req, res) => {
@@ -100,7 +100,9 @@ app.get('/phonebook', (req, res) => {
         let restriction = 'WHERE ';
         lastNames.forEach((v, i) => {
             if (/^\w*\.{3}$/.test(v))
-                restriction += `last_name LIKE '${v.replace('...', '')}%'`
+                restriction += `last_name LIKE '${v.replace('...', '')}%'`;
+            else if (/^\.{3}\w*$/.test(v))
+                restriction += `last_name LIKE '%${v.replace('...', '')}'`;
             else
                 restriction += `last_name = '${v}'`;
             if (i !== lastNames.length - 1)
@@ -117,7 +119,7 @@ app.get('/phonebook', (req, res) => {
         res.render('phone-book', {
             records: result,
             error: errMsg,
-            inserted: req.query.insMsg
+            databaseMod: req.query.databaseMod
         });
     });
 });
@@ -162,7 +164,7 @@ app.post('/phonebook-insert', (req, res) => {
                     database.query(sqlQuery3, (err, result3) => {
                         if (err) throw err;
                         let message = `Inserted new person ${req.body.fName} ${req.body.lName} with a phone number ${req.body.pNumber.replace('+', '%2B')}`;
-                        res.redirect('/phonebook?insMsg=' + message);
+                        res.redirect('/phonebook?databaseMod=' + message);
                     });
                 // Otherwise, insert the phone number for the existing person
                 } else {
@@ -173,7 +175,7 @@ app.post('/phonebook-insert', (req, res) => {
                     database.query(sqlQuery3, (err, result3) => {
                         if (err) throw err;
                         let message = `Inserted new phone number ${req.body.pNumber.replace('+', '%2B')} for existing person ${req.body.fName} ${req.body.lName}`;
-                        res.redirect('/phonebook?insMsg=' + message );
+                        res.redirect('/phonebook?databaseMod=' + message );
                     });
                 }
             });
@@ -182,7 +184,7 @@ app.post('/phonebook-insert', (req, res) => {
             console.log('Entry already exists');
             console.log(result1);
             let message = `Phone number ${req.body.pNumber.replace('+', '%2B')} already exist in database for person ${result1[0].first_name} ${result1[0].last_name}`;
-            res.redirect('/phonebook?insMsg=' + message);
+            res.redirect('/phonebook?databaseMod=' + message);
         }
     });
 });
@@ -196,16 +198,21 @@ app.post('/phonebook-insert', (req, res) => {
 */
 app.post('/phonebook-delete', (req, res) => {
     let message = '';
+    console.log("delMarked: " + req.body.delMarked);
+    if  (req.body.delMarked === undefined) {
+        console.log("TRIGEROVANO!");
+        res.redirect('/phonebook?databaseMod=No records selected for deletion'); return }
 
     if (!(req.body.delMarked instanceof Array)) {
         let tmpArray = [];
         tmpArray.push(req.body.delMarked);
         req.body.delMarked = tmpArray;
     }
+    console.log(req.body.delMarked);
     req.body.delMarked.forEach((v, i) => {
         let sqlQuery1 = `
-            SELECT person_id
-            FROM phone_numbers
+            SELECT pn.person_id, first_name, last_name
+            FROM phone_numbers pn join persons pe on pn.person_id = pe.person_id
             WHERE phone_number = '${v}'
         `;
         database.query(sqlQuery1, (err, result1) => {
@@ -232,16 +239,16 @@ app.post('/phonebook-delete', (req, res) => {
                             if (err) throw err;
                             if (i !== 0)
                                 message += '%3Cbr%3E';
-                            message += `Deleted phone number ${v.replace('+', '%2B')} AND person ${result1[0].person_id}`;
+                            message += `Deleted phone number ${v.replace('+', '%2B')} AND person ${result1[0].first_name} ${result1[0].last_name}`;
                             if (i === req.body.delMarked.length - 1)
-                                res.redirect('/phonebook?insMsg=' + message);
+                                res.redirect('/phonebook?databaseMod=' + message);
                         });
                     } else {
                         if (i !== 0)
                             message += '%3Cbr%3E';
-                        message += `Deleted phone number ${v.replace('+', '%2B')} of person ${result1[0].person_id}`;
+                        message += `Deleted phone number ${v.replace('+', '%2B')} of person ${result1[0].first_name} ${result1[0].last_name}`;
                         if (i === req.body.delMarked.length - 1)
-                            res.redirect('/phonebook?insMsg=' + message);
+                            res.redirect('/phonebook?databaseMod=' + message);
                     }
 
                 });

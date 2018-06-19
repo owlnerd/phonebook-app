@@ -1,40 +1,57 @@
-/* ======
-   GLOBAL
-   ====== */
+/*
+    =====
+    Fonts
+    =====
+    font-family: 'Roboto', sans-serif;
 
-   * {
+    font-family: 'Old Standard TT', serif;
+    font-family: 'PT Sans', sans-serif;
+*/
+
+
+
+/*
+    ======
+    GLOBAL
+    ======
+*/
+
+* {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
 }
 
-
 html {
     position: relative;
     min-height: 100%;
-    font-family: calibri;
+    font-family: 'Old Standard TT', serif;
     padding-bottom: 50px;
+    font-size: 10px;
+}
+
+h1, h2, h3, h4, h5, h6 {
+    font-family: 'PT Sans', sans-serif;
 }
 
 
-#head-div {
 
-}
-
-
+/*
+    ========================
+    MAIN LAYOUT SEGMENTATION
+    ========================
+*/
 #nav-div {
-    background-color: rgb(20, 20, 20);
+    background-color: rgb(50, 50, 50);
     margin: 5px 0;
 }
-
 
 #content-div {
 }
 
-
 #foot-div {
     color: white;
-    background-color: rgb(20, 20, 20);
+    background-color: rgb(50, 50, 50);
     position: absolute;
     left:0;
     bottom: 0;
@@ -43,8 +60,6 @@ html {
     overflow: hidden;
     border-bottom: 2px solid white;
 }
-
-
 
 /* ========
    DEFINING
@@ -57,14 +72,12 @@ header, nav, main, footer {
     max-width: 900px;
 }
 
-
 header {
     height: 150px;
     position: relative;
 }
 
 header h1 {
-    position: relative;
     display: none;
 }
 
@@ -77,16 +90,11 @@ header img {
     margin: auto;
 }
 
-
 nav {
+    font-family: 'PT Sans', sans-serif;
     text-align: center;
 }
 
-/*nav ul {
-    display: inline-block;
-    background-color: yellow;
-    margin: 0 auto;
-}*/
 
 nav li {
     display: inline;
@@ -96,8 +104,7 @@ nav li {
 
 nav li a {
     color: white;
-    font-size: 0.9em;
-    font-weight: bold;
+    font-size: 1.4em;
     display: inline-block;
     margin:0;
     padding: 0 40px;
@@ -112,9 +119,9 @@ nav li a:hover {
 }
 
 nav li a#current {
-    text-decoration: underline;
+    background-color: white;
+    color: black;
 }
-
 
 main {
     padding: 30px;
@@ -127,22 +134,25 @@ main section {
 main section h3 {
     margin-top: 20px;
     margin-bottom: 5px;
-    font-size: 2em;
+    font-size: 2.5em;
     color: rgb(70, 70, 70);
 }
 
 main section p {
+    font-size: 1.7em;
     padding-left: 50px;
     margin-top: 10px;
     margin-bottom: 10px;
-    color: rgb(50, 50, 50);
+    color: rgb(30, 30, 30);
 }
 
-main section p#inserted {
+main section p#db-mod {
     padding-left: 0;
     margin-top: 5px;
     margin-bottom: 5px;
-    font-size: 0.8em;
+    font-family: 'Space Mono', monospace;
+    color: darkgreen;
+    font-size: 1.1em;
 }
 
 footer p {
@@ -154,10 +164,18 @@ footer p {
     display: none;
 }
 
-
 footer {
+    font-family: 'PT Sans', sans-serif;
+    font-size: 1.5em;
     text-align: center;
     line-height: 50px;
+}
+
+p.error-message {
+    font-family: 'PT Sans', sans-serif;
+    font-size: 1.1em;
+    color: darkred;
+    line-height: 1.1em;
 }
 
 
@@ -175,26 +193,37 @@ tr:nth-child(2n) {
     background-color: rgb(240, 240, 240);
 }
 
+th {
+    text-align: center;
+    font-family: 'PT Sans', sans-serif;
+    font-size: 1.4em;
+    background-color: rgb(50, 50, 50);
+    color: white;
+    padding: 7px 12px;
+}
+
 td {
+    font-family: 'Space Mono', monospace;
+    font-size: 1.3em;
     text-align: right;
     padding: 5px 10px;
+    font-weight: normal;
 }
-
-th {
-    background-color: black;
-    color: white;
-    padding: 5px 10px;
-}
-
-
-
 
 form {
     text-align: right;
 }
 
+form label {
+    font-family: 'PT Sans', sans-serif;
+    font-size: 1.3em;
+}
+
+
 button, input[type="submit"] {
     padding: 3px 5px;
+    font-family: 'PT Sans', sans-serif;
+    font-size: 1.3em;
 }
 
 input[type="text"] {
@@ -229,14 +258,19 @@ input[type="text"] {
     margin: auto;
     padding: 30px;
     width: 350px;
-    height: 380px;
+    height: 500px;
     background-color: white;
     box-shadow: 10px 10px 5px rgba(0,0,0, 0.2);
 }
 
 #insert-overlay form {
+    margin: auto auto;
     text-align: left;
     margin-top: 20px;
+}
+
+#insert-overlay h3{
+    font-size: 2em;
 }
 
 #insert-overlay form div.form-element {
@@ -256,7 +290,7 @@ input[type="text"] {
 
 
 button#close-insert-overlay {
-    font-size: 0.7em;
+    font-size: 1em;
     font-weight: bold;
     padding: 2px;
     width: 25px;
