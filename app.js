@@ -64,22 +64,6 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 
 
-/*
-    =
-    /
-    =
-*/
-/*app.get('/', (req, res) => {
-    res.render('index', {});
-});*/
-
-
-app.get('/test', (req, res) => {
-    res.send('<p>Muzika mi svira na uvce<br>a decu zabole uvce</p>');
-});
-
-
-
 /* 
     ==========
     /phonebook
