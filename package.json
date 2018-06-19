@@ -4,7 +4,7 @@
   "description": "A simple phonebook app created for demonstration purposes.",
   "main": "app.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "node app.js"
   },
   "author": "Ivan Djurkov",
   "license": "MIT",
