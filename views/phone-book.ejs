@@ -8,26 +8,28 @@
     <link href="https://fonts.googleapis.com/css?family=Old+Standard+TT" rel="stylesheet"> 
     <link href="https://fonts.googleapis.com/css?family=Space+Mono" rel="stylesheet"> 
     <link rel="stylesheet" type="text/css" href="css/main.css">
+    <link rel="stylesheet" type="text/css" href="css/phonebook.css">
     <title>Phonebook</title>
 </head>
 <body>
+    <!-- BEGIN ZAGLAVLJE -->
     <div id="head-div">
         <header>
             <h1>Phonebook App</h1>
             <img src="images/drawing.svg">
         </header>
     </div>
+    <!-- END ZAGLAVLJE -->
 
+    <!-- BEGIN GLAVNA NAVIGACIONA LINIJA -->
     <div id="nav-div">
         <nav>
             <ul>
-                <li><a href="/">HOME</a></li>
-                <li><a href="#" id="current">PHONEBOOK</a></li>
-                <li><a href="about.html">ABOUT</a></li>
-                <li><a href="#">CONTACT</a></li>
+                <li><a href="/">HOME</a></li><li><a href="#" id="current">PHONEBOOK</a></li><li><a href="about.html">ABOUT</a></li><li><a href="contact.html">CONTACT</a></li>
             </ul>
         </nav>
     </div>
+    <!-- END GLAVNA NAVIGACIONA LINIJA -->
 
     <!-- BEGIN MAIN CONTENT AREA -->
     <div id="content-div">
@@ -51,6 +53,7 @@
             </section>
             <!-- END INPUT AND FILTERS -->
 
+            <!-- BEGIN IMENIK LISTING -->
             <section>
                 <% if (databaseMod) { %>
                     <p id="db-mod"><%- databaseMod %></p>
@@ -75,13 +78,15 @@
                     </table><br>
                     <button id="select-all" type="button">Select all</button>
                     <button id="deselect-all" type="button">Deselect all</button>
-                    <input class="btn" type="submit" value="Delete selected">
+                    <input id="delete-selected" class="btn" type="submit" value="Delete selected">
                 <% } else { %>
-                    <%= error %>
+                    <p id="db-mod"><%= error %></p
                 <% } %>
                 </form>
             </section>
+            <!-- END IMENIK LISTING -->
 
+            <!-- BEGIN FORMA ZA UNOS NOVOG TELEFONA -->
             <div id="overlay-background">
                 <div id="insert-overlay">
                     <h3>Insert new phonebook record</h3>
@@ -109,22 +114,22 @@
                     <button id="close-insert-overlay">X</button>
                 </div>
             </div>
+            <!-- END FORMA ZA UNOS NOVOG TELEFONA -->
+
         </main>
     </div>
     <!-- END MAIN CONTENT AREA -->
 
+    <!-- BEGIN FOOTER -->
     <div id="foot-div">
         <footer>
             <p>Copyright © 2018 - Ivan Djurkov</p>
         </footer>
     </div>
+    <!-- END FOOTER -->
 
-
-
-
-
+    <!-- JAVASCRIPT -->
     <script src="scripts/phonebook-script.js"></script>
-
 
 </body>
 </html>

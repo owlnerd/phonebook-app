@@ -1,33 +1,38 @@
 <!DOCTYPE html>
 <html>
+
 <head>
     <meta charset="utf-8" />
     <meta name="author" content="Ivan Djurkov">
     <meta name="description" content="Phone Book Application project for developer candidate">
     <link href="https://fonts.googleapis.com/css?family=PT+Sans:700" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css?family=Old+Standard+TT" rel="stylesheet"> 
+    <link href="https://fonts.googleapis.com/css?family=Old+Standard+TT" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Zilla+Slab" rel="stylesheet">
     <link rel="stylesheet" type="text/css" href="css/main.css">
     <title>About</title>
 </head>
+
 <body>
+    <!-- BEGIN ZAGLAVLJE -->
     <div id="head-div">
         <header>
             <h1>Phonebook App</h1>
             <img src="images/drawing.svg">
         </header>
     </div>
+    <!-- END ZAGLAVLJE -->
 
+    <!-- BEGIN GLAVNA NAVIGACIONA LINIJA -->
     <div id="nav-div">
         <nav>
             <ul>
-                <li><a href="/">HOME</a></li>
-                <li><a href="/phonebook">PHONEBOOK</a></li>
-                <li><a href="#" id="current">ABOUT</a></li>
-                <li><a href="contact.html">CONTACT</a></li>
+                <li><a href="/">HOME</a></li><li><a href="/phonebook">PHONEBOOK</a></li><li><a href="#" id="current">ABOUT</a></li><li><a href="contact.html">CONTACT</a></li>
             </ul>
         </nav>
     </div>
+    <!-- END GLAVNA NAVIGACIONA LINIJA -->
 
+    <!-- BEGIN MAIN CONTENT AREA -->
     <div id="content-div">
         <main>
             <section class="hidden">
@@ -38,57 +43,56 @@
                 <h3>Functionality</h3>
                 <p>This is a simple, yet fully functional application that allows insertion and deletion of 
                     phone book records to and from the database. Another functionality offered is filtering of
-                    database records agains the last name field. However, I was free to enrich the filter
+                    database records against the last name field. However, I was free to enrich the filter
                     functionality in such a way that it allows filtering against more than one last name, and
-                    also filtering against last names that begin or end with a specified substring.
+                    also filtering against last names that begin or end with a specified string.
                     For example if we specify a filter like "Pa...", app will return all the records
-                    where last name begins with "Pa" (like "Pantic", "Paunovic".... Similarly, if we specify a filter like "...ic", app
+                    where last name begins with "Pa" (like "Pantic", "Paunovic"...). Similarly, if we specify a filter like "...ic", app
                     will return all records where last name ends with "ic" (like "Smiljanic", "Pantic"...).
                     If we want to specify more than one last name criteria, we must delimit them with semicolon character(";").
-                    for example: "Djurkov;Pa...;...ic" will get all records where last name is "Djurkov" or last name
+                    For example: "Djurkov;Pa...;...ic" will get all records where last name is "Djurkov" or last name
                     begins with "Pa" or last name ends with "ic".
                 </p>
                 <p>
-                    Insertion of records into the database is done by submitting a manually populates form. Form validates
-                    entries on the client side and allows submissio only if all the fields are populated with valid data.
-                    Upon insertion of record, phone book is rerendered with added information about the inserted record.
+                    Insertion of records into the database is done by submitting a manually populated form. Form validates
+                    entries on the client side and allows submission only if all of the fields are populated with valid data.
+                    Upon inserting a record, phone book is re-rendered with added information about the inserted record.
                 </p>
                 <p>
                     Deletion of records from the database is implemented so that it can delete multiple entries at once. Each
-                    listed record in the phone book has a checkbox that can be checked. After interacting with "Dele selected"
-                    submit button, all selected records will be deleted from the database and the phone book is rerendered with
+                    listed record in the phone book has a checkbox that can be checked. After interacting with "Delete selected"
+                    submit button, all selected records will be deleted from the database and the phone book is re-rendered with
                     added list of deleted records.
                 </p>
                 <p>
-                    Database consists of two tables: "persons" and "phone_numbers". It was designed like so in order to eliminate
+                    Database consists of two tables: "persons" and "phone_numbers". It was designed like this in order to eliminate
                     redundancy of first_name and last_name entries, because one person can have many phone numbers
                     (person -> phone_number = one-to-many relationship). Both insertions of records to and deletions from the
-                    database are performed on both tables and are doing checks in order to avoid corruption of tables
-                    consistency. For example, if a user is inserting a phone number for a person that is already present
+                    database are performed on both tables and are executing checks in order to ensure consistency.
+                    For example, if a user is inserting a phone number for a person that is already present
                     in the database, only phone_number will be inserted into "phone_numbers" table. Otherwise, new person
                     will be added to the "persons" table, and phone number will be added to the "phone_numbers" table.
                 </p>
-                <h3>Guide</h3>
-                <p>You can reach the phone book app itself by interacting with the PHONEBOOK
-                    link in the main bav bar.
-                   You can find out more about implementation details and technologies used in
-                   the ABOUT section.
-                    Authors contact details can be found in the CONTACT section.
+                <h3>Technologies used</h3>
+                <p>This application was implemented using: Node.js environment with Express framework and MySQL database on the back-end side
+                    and Pure HTML, CSS and JavaScript on the front-end side. No third party libraries or elements were used (apart from
+                    Express framework and Google web fonts).
                 </p>
-                <h3>Functionality</h3>
+                <h3>Implementation</h3>
                 <p>
-                    Phone Book Application allows a user to insert and delete phone book records
-                    to and from the database. It can list all the records that are currently
-                    in the database, or filter them out by a specified last name.
+                    Application was built from zero. All code was written from scratch.
                 </p>
             </section>
         </main>
     </div>
+    <!-- END MAIN CONTENT AREA -->
 
+    <!-- BEGIN FOOTER -->
     <div id="foot-div">
         <footer>
             <p>Copyright © Ivan Djurkov 2018</p>
         </footer>
     </div>
+    <!-- END FOOTER -->
 </body>
 </html>

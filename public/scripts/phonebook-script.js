@@ -1,46 +1,75 @@
-// NEW RECORD DUGME KOJE OTVARA OVERLAY FORMU ZA UNOS
+/*
+    ==================================================
+    NEW RECORD DUGME KOJE OTVARA OVERLAY FORMU ZA UNOS
+    ==================================================
+*/
 document.getElementById('new-record-btn').addEventListener('click', () => {
     console.log("TEST ZA NEW RECORD NUTTON");
     document.getElementById('overlay-background').style.display = 'block';
 });
 
 
-// CLOSE OVERLAY DUGME KOJE ZATVARA OVERLAY FORMU
+
+/*
+    ==============================================
+    CLOSE OVERLAY DUGME KOJE ZATVARA OVERLAY FORMU
+    ==============================================
+*/
 document.getElementById('close-insert-overlay').addEventListener('click', () => {
     console.log("TEST ZA CLOSE OVERLAY BUTTON");
     document.getElementById('overlay-background').style.display = 'none';
 });
 
 
-// RESET FIELDS DUGME NA OVERLAY FORMI KOJE POSTAVLJA SVA POLJA
-// FORME ZA UNOS TEKSTA NA VREDNOST PRAZNOG STRINGA
+
+/*
+    ============================================================
+    RESET FIELDS DUGME NA OVERLAY FORMI KOJE POSTAVLJA SVA POLJA
+    FORME ZA UNOS TEKSTA NA VREDNOST PRAZNOG STRINGA
+    ============================================================
+*/
 document.getElementById('reset-fields').addEventListener('click', () => {
     console.log("TEST ZA RESET FIELDS BUTTON");
+    document.querySelectorAll('.error-message').forEach(v => {
+        v.remove();
+    });
     document.querySelectorAll('#insert-overlay input[type="text"]').forEach(v => {
         v.value = '';
     });
 });
 
 
-// SELECT ALL DUGME KOJE CHEKIRA SVE CHECKBOXE ZA SELEKTOVANJE UNOSA
-document.getElementById('select-all').addEventListener('click', () => {
-    console.log("TEST ZA SELECT ALL");
-    document.querySelectorAll('.select-record').forEach(v => {
-        v.checked = true;
+
+/*
+    ========================================================================
+    FORMA MORA DA POSTOJI DA BIH SELEKTOVAO DUGMAD ZA BRISANJE, OR ELSE BUBA
+    ========================================================================
+*/
+if  (document.getElementById('phonebook')) {
+    // SELECT ALL DUGME KOJE CHEKIRA SVE CHECKBOXE ZA SELEKTOVANJE UNOSA
+    document.getElementById('select-all').addEventListener('click', () => {
+        console.log("TEST ZA SELECT ALL");
+        document.querySelectorAll('.select-record').forEach(v => {
+            v.checked = true;
+        });
     });
-});
 
-// DESELECT ALL DUGME KOJE CHEKIRA SVE CHECKBOXE ZA SELEKTOVANJE UNOSA
-document.getElementById('deselect-all').addEventListener('click', () => {
-    console.log("TEST ZA DESELECT ALL");
-    document.querySelectorAll('.select-record').forEach(v => {
-        v.checked = false;
+    // DESELECT ALL DUGME KOJE CHEKIRA SVE CHECKBOXE ZA SELEKTOVANJE UNOSA
+    document.getElementById('deselect-all').addEventListener('click', () => {
+        console.log("TEST ZA DESELECT ALL");
+        document.querySelectorAll('.select-record').forEach(v => {
+            v.checked = false;
+        });
     });
-});
+}
 
 
 
-// VALIDACIJA FORME ZA UNOS NOVIH RECORDS-A
+/*
+    ========================================
+    VALIDACIJA FORME ZA UNOS NOVIH RECORDS-A
+    ========================================
+*/
 let insertRecordForm = document.getElementById('insert-record-form');
 insertRecordForm.addEventListener('submit', e => {
     let valid = true;
@@ -79,6 +108,7 @@ insertRecordForm.addEventListener('submit', e => {
         if (phoneNumberField.value === '') {
             phoneNumberErr.innerHTML = 'Phone number field is required'
         } else {
+            phoneNumberField.value = '';
             phoneNumberErr.innerHTML = `Phone Number must be of format:<br>
             +318ccxxxx<br>where cc is two digit city code and xxxx is 6 or 7 digit phone number.`
         }
@@ -92,12 +122,3 @@ insertRecordForm.addEventListener('submit', e => {
 
     return false;
 });
-
-
-
-
-let firstNameField = document.getElementById('first_name');
-let lastNameFiels = document.getElementById('last_name');
-let phoneNumberField = document.getElementById('phone_number');
-
-let errorMessages = document.querySelectorAll('.error-message');
