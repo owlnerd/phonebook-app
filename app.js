@@ -11,10 +11,10 @@ const port = process.env.PORT || 8080;
     ===================================================
 */
 const database = mysql.createConnection({
-    host: 'localhost',
-    user: 'root',
-    password: '',
-    database: 'phonebook',
+    host: 'db4free.net',
+    user: 'phonebookapp',
+    password: '**********',
+    database: 'phnbkdb',
     multipleStatements: true // This option is for being able to run multistatement queries.
     // Took some research to figure it out.
 });
