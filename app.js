@@ -3,7 +3,7 @@ const bodyParser = require('body-parser');
 const path = require('path');
 const mysql = require('mysql');
 
-const port = 3000;
+const port = process.env.PORT || 8080;
 
 /*
     ===================================================
@@ -11,10 +11,10 @@ const port = 3000;
     ===================================================
 */
 const database = mysql.createConnection({
-    host: 'localhost',
-    user: 'root',
-    password: '',
-    database: 'phonebook',
+    host: 'db4free.net',
+    user: 'phonebookapp',
+    password: 'p1h2o3n4e5',
+    database: '*******',
     multipleStatements: true // This option is for being able to run multistatement queries.
     // Took some research to figure it out.
 });
@@ -256,7 +256,15 @@ app.post('/phonebook-delete', (req, res) => {
         });
 
     });
-    console.log(message);
+});
+
+
+
+app.get('*', function(req, res){
+    res.render('not-found', {
+        reqUrl: req.url
+    });
+    console.log(req.url)
 });
 
 

@@ -110,7 +110,7 @@ insertRecordForm.addEventListener('submit', e => {
         } else {
             phoneNumberField.value = '';
             phoneNumberErr.innerHTML = `Phone Number must be of format:<br>
-            +318ccxxxx<br>where cc is two digit city code and xxxx is 6 or 7 digit phone number.`
+            +381ccxxxx<br>where cc is two digit city code and xxxx is 6 or 7 digit phone number.`
         }
         phoneNumberField.parentNode.insertBefore(phoneNumberErr, phoneNumberField.nextSibling);
         valid = false;
