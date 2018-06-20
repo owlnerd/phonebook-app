@@ -3,7 +3,7 @@ const bodyParser = require('body-parser');
 const path = require('path');
 const mysql = require('mysql');
 
-const port = process.env.PORT || 8080;
+const port = 3000;
 
 /*
     ===================================================
@@ -13,8 +13,8 @@ const port = process.env.PORT || 8080;
 const database = mysql.createConnection({
     host: 'db4free.net',
     user: 'phonebookapp',
-    password: 'p1h2o3n4e5',
-    database: '*******',
+    password: '**********',
+    database: 'phnbkdb',
     multipleStatements: true // This option is for being able to run multistatement queries.
     // Took some research to figure it out.
 });
@@ -61,22 +61,6 @@ app.use(bodyParser.urlencoded({extended: false}));
     ========================
 */
 app.use(express.static(path.join(__dirname, 'public')));
-
-
-
-/*
-    =
-    /
-    =
-*/
-/*app.get('/', (req, res) => {
-    res.render('index', {});
-});*/
-
-
-app.get('/test', (req, res) => {
-    res.send('<p>Muzika mi svira na uvce<br>a decu zabole uvce</p>');
-});
 
 
 
@@ -260,6 +244,11 @@ app.post('/phonebook-delete', (req, res) => {
 
 
 
+/*
+    =============
+    Handling e404
+    =============
+*/
 app.get('*', function(req, res){
     res.render('not-found', {
         reqUrl: req.url
