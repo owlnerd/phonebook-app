@@ -3,7 +3,7 @@ const bodyParser = require('body-parser');
 const path = require('path');
 const mysql = require('mysql');
 
-const port = 3000;
+const port = process.env.PORT || 8080;
 
 /*
     ===================================================
